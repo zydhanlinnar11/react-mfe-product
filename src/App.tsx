@@ -1,4 +1,4 @@
-import React, { useState, lazy } from 'react'
+import React, { useState, lazy, Suspense } from 'react'
 import ReactDOM from 'react-dom'
 import clsx from 'clsx'
 
@@ -6,6 +6,11 @@ import './index.scss'
 
 // @ts-ignore
 const CheckoutButton = lazy(() => import('react_mfe_checkout/Button'))
+// @ts-ignore
+const CheckoutBasket = lazy(() => import('react_mfe_checkout/Basket'))
+
+// @ts-ignore
+const RelatedProducts = lazy(() => import('react_mfe_inspire/RelatedProducts'))
 
 const products = [
   {
@@ -41,7 +46,7 @@ const App = () => {
           />
           <div className="my-auto">
             <p className="text-lg">{products[selectedProductIndex].name}</p>
-            <div className="flex">
+            <div className="flex mb-8">
               {products.map((product, index) => (
                 <a
                   href="#"
@@ -62,11 +67,20 @@ const App = () => {
                 </a>
               ))}
             </div>
+            <Suspense fallback={'Loading...'}>
+              <div className="flex gap-x-8 items-center">
+                <CheckoutButton itemId={products[selectedProductIndex].id} />
+                <CheckoutBasket />
+              </div>
+            </Suspense>
           </div>
         </div>
       </div>
-      <div>
+      <div className="text-center">
         <h2 className="text-xl font-bold">Related Products</h2>
+        <Suspense fallback={'Loading...'}>
+          <RelatedProducts />
+        </Suspense>
       </div>
     </div>
   )

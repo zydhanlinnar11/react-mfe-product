@@ -4,7 +4,7 @@ const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPl
 const deps = require('./package.json').dependencies
 module.exports = {
   output: {
-    publicPath: 'http://localhost:3000/',
+    publicPath: 'https://product.react-mfe.zydhan.com/',
   },
 
   resolve: {
@@ -45,7 +45,10 @@ module.exports = {
       filename: 'remoteEntry.js',
       remotes: {
         react_mfe_checkout:
-          'react_mfe_checkout@http://localhost:3001/remoteEntry.js',
+          'react_mfe_checkout@https://checkout.react-mfe.zydhan.com/remoteEntry.js',
+
+        react_mfe_inspire:
+          'react_mfe_inspire@https://inspire.react-mfe.zydhan.com/remoteEntry.js',
       },
       exposes: {},
       shared: {
