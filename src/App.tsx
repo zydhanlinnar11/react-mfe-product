@@ -1,11 +1,15 @@
 import React, { useState, lazy, Suspense } from 'react'
-import ReactDOM from 'react-dom'
 import clsx from 'clsx'
+import './styles.css'
 
-import './index.scss'
+let CheckoutButton = <></>
+try {
+  // @ts-ignore
+  CheckoutButton = lazy(() => import('react_mfe_checkout/Button'))
+} catch (e) {
+  console.log(e)
+}
 
-// @ts-ignore
-const CheckoutButton = lazy(() => import('react_mfe_checkout/Button'))
 // @ts-ignore
 const CheckoutBasket = lazy(() => import('react_mfe_checkout/Basket'))
 
@@ -69,6 +73,7 @@ const App = () => {
             </div>
             <Suspense fallback={'Loading...'}>
               <div className="flex gap-x-8 items-center">
+                {/* @ts-ignore */}
                 <CheckoutButton itemId={products[selectedProductIndex].id} />
                 <CheckoutBasket />
               </div>
@@ -85,4 +90,5 @@ const App = () => {
     </div>
   )
 }
-ReactDOM.render(<App />, document.getElementById('app'))
+
+export default App
