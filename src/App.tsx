@@ -1,6 +1,5 @@
-import React, { useState, lazy, Suspense } from 'react'
+import React, { useState, lazy, Suspense, Component } from 'react'
 import clsx from 'clsx'
-import './styles.css'
 
 let CheckoutButton = <></>
 try {
@@ -34,61 +33,81 @@ const products = [
   },
 ]
 
-const App = () => {
-  const [selectedProductIndex, setSelectedProductIndex] = useState(0)
+// const App = () => {
+//   // const [selectedProductIndex, setSelectedProductIndex] = useState(0)
 
-  return (
-    <div className="flex justify-center mt-8 gap-x-12">
-      <div>
-        <h1 className="text-xl font-bold">The Model Store</h1>
-        <div className="flex">
-          <img
-            src={products[selectedProductIndex].img}
-            alt={`Photo of ${products[selectedProductIndex].name}`}
-            width="400"
-            height="400"
-          />
-          <div className="my-auto">
-            <p className="text-lg">{products[selectedProductIndex].name}</p>
-            <div className="flex mb-8">
-              {products.map((product, index) => (
-                <a
-                  href="#"
-                  key={product.id}
-                  onClick={() => setSelectedProductIndex(index)}
-                  className={clsx(
-                    index === selectedProductIndex
-                      ? 'border-b-2 border-green-600'
-                      : ''
-                  )}
-                >
-                  <img
-                    src={product.img}
-                    alt={`Photo of ${product}`}
-                    width="96"
-                    height="96"
-                  />
-                </a>
-              ))}
-            </div>
-            <Suspense fallback={'Loading...'}>
-              <div className="flex gap-x-8 items-center">
-                {/* @ts-ignore */}
-                <CheckoutButton itemId={products[selectedProductIndex].id} />
-                <CheckoutBasket />
-              </div>
-            </Suspense>
-          </div>
-        </div>
-      </div>
-      <div className="text-center">
-        <h2 className="text-xl font-bold">Related Products</h2>
-        <Suspense fallback={'Loading...'}>
-          <RelatedProducts />
-        </Suspense>
-      </div>
-    </div>
-  )
+//   return (
+//   )
+// }
+
+// export default App
+
+type State = {
+  selectedProductIndex: number
 }
 
-export default App
+export default class App extends Component<any, State> {
+  constructor(props: any) {
+    super(props)
+    this.state = { selectedProductIndex: 0 }
+  }
+
+  render() {
+    const { selectedProductIndex } = this.state
+
+    return (
+      <div className="flex justify-center mt-8 gap-x-12">
+        <div>
+          <h1 className="text-xl font-bold">The Model Store</h1>
+          <div className="flex">
+            <img
+              src={products[selectedProductIndex].img}
+              alt={`Photo of ${products[selectedProductIndex].name}`}
+              width="400"
+              height="400"
+            />
+            <div className="my-auto">
+              <p className="text-lg">{products[selectedProductIndex].name}</p>
+              <div className="flex mb-8">
+                {products.map((product, index) => (
+                  <a
+                    href="#"
+                    key={product.id}
+                    onClick={() =>
+                      this.setState({ selectedProductIndex: index })
+                    }
+                    className={clsx(
+                      index === selectedProductIndex
+                        ? 'border-b-2 border-green-600'
+                        : ''
+                    )}
+                  >
+                    <img
+                      src={product.img}
+                      alt={`Photo of ${product}`}
+                      width="96"
+                      height="96"
+                    />
+                  </a>
+                ))}
+              </div>
+              <Suspense fallback={'Loading...'}>
+                <div className="flex gap-x-8 items-center">
+                  {/* @ts-ignore */}
+                  <CheckoutButton itemId={products[selectedProductIndex].id} />
+                  <CheckoutBasket />
+                </div>
+              </Suspense>
+            </div>
+          </div>
+        </div>
+        <div className="text-center">
+          <h2 className="text-xl font-bold">Related Products</h2>
+          <Suspense fallback={'Loading...'}>
+            <RelatedProducts />
+          </Suspense>
+        </div>
+      </div>
+    )
+  }
+}
